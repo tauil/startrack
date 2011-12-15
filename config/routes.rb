@@ -7,6 +7,6 @@ Startrack::Application.routes.draw do
       resources :comments, :only => [:create, :destroy]
     end
   end
-
+  mount Resque::Server, :at => "/resque"
   root :to => "projects#index"
 end
