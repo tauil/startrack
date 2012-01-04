@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  respond_to :js, :only => [:change_status]
+  respond_to :js, :only => [:change_status, :start, :stop]
   before_filter :load_users, :load_estimates, :load_status, :load_types, :only => [:new, :create, :edit]
 
   def show
@@ -57,7 +57,22 @@ class TasksController < ApplicationController
     respond_with @task
   end
 
+  def start
+    @task = project.tasks.find(params[:id])
+    @task.start_work
+
+    respond_with @task
+  end
+
+  def stop
+    @task = project.tasks.find(params[:id])
+    @task.stop_work
+
+    respond_with @task
+  end
+
   private
+
   def project
     @project ||= current_user.projects.find(params[:project_id])
   end
